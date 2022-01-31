@@ -137,15 +137,19 @@ def main(stdscr):
         window.refresh()
 
     game_win = curses.newwin(2000, 2000, 6, 1)
-    game_win.addstr(0, cols*4+4, "     ┌─────┐            ")
-    game_win.addstr(1, cols*4+4, "     │  W  │                 UP")
-    game_win.addstr(2, cols*4+4, "┌────┴┬────┴┬─────┐     LEFT    RIGHT")
-    game_win.addstr(3, cols*4+4, "│  A  │  S  │  D  │         DOWN")
-    game_win.addstr(4, cols*4+4, "└─────┴─────┴─────┘")
-    game_win.addstr(5, cols*4+4, "")
-    game_win.addstr(6, cols*4+4, "┌─────────────────┐     ")
-    game_win.addstr(7, cols*4+4, "│      SPACE      │         MINE")
-    game_win.addstr(8, cols*4+4, "└─────────────────┘")
+    game_win.addstr(2, cols*4+4, "     ┌─────┐            ")
+    game_win.addstr(3, cols*4+4, "     │  W  │                 UP")
+    game_win.addstr(4, cols*4+4, "┌────┴┬────┴┬─────┐     LEFT    RIGHT")
+    game_win.addstr(5, cols*4+4, "│  A  │  S  │  D  │         DOWN")
+    game_win.addstr(6, cols*4+4, "└─────┴─────┴─────┘")
+    game_win.addstr(7, cols*4+4, "")
+    game_win.addstr(8, cols*4+4, "┌─────────────────┐     ")
+    game_win.addstr(9, cols*4+4, "│      SPACE      │         MINE")
+    game_win.addstr(10, cols*4+4, "└─────────────────┘")
+    game_win.addstr(11, cols*4+4, "")
+    game_win.addstr(12, cols*4+4, "     ┌─────┐            ")
+    game_win.addstr(13, cols*4+4, "     │  F  │            FLAG / UN-FLAG")
+    game_win.addstr(14, cols*4+4, "     └─────┘")
 
     for y_ in range(rows):
         delta_x = 0
@@ -154,9 +158,13 @@ def main(stdscr):
             game_win.refresh()
             delta_x += 3
 
-    game_win.move(0, 0)  ## reset cursor position
     DED = False
     STARTED = False
+    board_cache = []
+    flag_board = []
+    flag_counter = total_mines
+    game_win.addstr(0, cols*4+4, f"⚑ x {flag_counter}".center(37), BLUE)
+    game_win.move(0, 0)  ## reset cursor position
 
     while not DED:
         curses.noecho()
@@ -177,11 +185,39 @@ def main(stdscr):
             elif key_pressed in (ord("D"), ord("d")) and current_x < cols * 4 - 4:
                 game_win.move(current_y, current_x + 4)
 
-            elif key_pressed == 32:  ## key pressed is a spacw
+            elif key_pressed in (ord("F"), ord("f")):
+                # for now, add the flag only on cells that haven't been revealed, and that too if the game has started
+                if STARTED:
+                    y_, x_ = game_win.getyx()
+                    try:
+                        _cell_ = board_cache[y_][x_ // 4]
+                    except IndexError:
+                        pass
+                    
+                    # do shit only when the cell isn't revealed
+                    if _cell_ != "#":
+                        if flag_board[y_][x_ // 4] != "F":  # if cell isn't already flagged
+                            game_win.addch(y_, x_, "⚑", RED)
+                            flag_board[y_][x_//4] = "F"
+                            flag_counter -= 1
+
+                        else: # if cell is already flagged, un-flippin-flag it
+                            game_win.addch(y_, x_, "•")
+                            flag_board[y_][x_//4] = "U" # should work.. right?
+                            flag_counter += 1
+                        
+                        game_win.addstr(0, cols*4+4, f"⚑ x {flag_counter}".center(37), BLUE)
+                        game_win.move(y_, x_) # reset cursor position
+                
+            
+            ## key pressed is a space, essentially the whole gameplay takes there
+            elif key_pressed == ord(" "):
                 y_, x_ = game_win.getyx()
                 if not STARTED:
+                    ## generate the board only once - when the game starts, that is
                     board = generate_board(rows, cols, total_mines, x_ // 4, y_)
                     board_cache = copy.deepcopy(board)
+                    flag_board = copy.deepcopy(board)
                     STARTED = True
                     START_TIME = time.perf_counter()
 
@@ -200,20 +236,20 @@ def main(stdscr):
                                 reveal(game_win, board, j, i)
                                 board_cache[j][i] = "#"
 
-                elif _cell_ == "*":  ## revealed cell is a mine
+                elif _cell_ == "*" and flag_board[y_][x_ // 4] != "F":  ## revealed cell is a mine and HASN'T been flagged
                     for i in range(cols):
                         for j in range(rows):
                             reveal(game_win, board, j, i)
                     game_win.nodelay(False)
 
                     game_win.addstr(rows + 2, 0, "U is DED xD", RED)
-                    game_win.addstr(10, cols * 4 + 4, f"Time elapsed: {round(time.perf_counter()-START_TIME)}s", GREEN)
+                    game_win.addstr(16, cols * 4 + 4, f"Time elapsed: {round(time.perf_counter()-START_TIME)}s".center(37), GREEN)
                     game_win.addstr(rows + 3, 0, "Press any key to continue...", curses.A_BOLD)
                     game_win.refresh()
                     game_win.getch()
                     DED = True
 
-                else:  ## revealed cell is a number
+                elif str(_cell_).isdigit():  ## revealed cell is a number
                     reveal(game_win, board, y_, x_ // 4)
                     board_cache[y_][x_ // 4] = "#"
                 game_win.move(y_, x_)
@@ -231,7 +267,7 @@ def main(stdscr):
                             reveal(game_win, board, j, i)
                     game_win.nodelay(False)
                     game_win.addstr(rows + 2, 0, "You won!!", GREEN)
-                    game_win.addstr(10, cols * 4 + 4, f"Time elapsed: {round(time.perf_counter()-START_TIME)}s", GREEN)
+                    game_win.addstr(16, cols * 4 + 4, f"Time elapsed: {round(time.perf_counter()-START_TIME)}s".center(37), GREEN)
                     game_win.addstr(rows + 3, 0, "Press any key to continue...", curses.A_BOLD)
                     game_win.refresh()
                     game_win.getch()
