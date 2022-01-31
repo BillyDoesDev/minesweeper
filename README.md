@@ -34,9 +34,9 @@ options:
 
 ## What next?
 If you have suggestions, feel free to [open an issue](https://github.com/DarkKnight450/Minesweeper/issues) or [create a pr](https://github.com/DarkKnight450/Minesweeper/pulls).</br>
-Feel free to contact me for further discussions at DarkKnight450@protonmail.com
+Feel free to contact me for further discussions at DarkKnight450@protonmail.com</br>
 
-**PS**
+**PS:**</br>
 Winbl*ws users can simply do the following to get the dependencies installed...
 ```sh
 py -m pip install windows-curses
