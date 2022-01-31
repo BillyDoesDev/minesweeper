@@ -39,6 +39,6 @@ Feel free to contact me for further discussions at DarkKnight450@protonmail.com
 ## PS
 Winbl*ws users can simply do the following to get the dependencies installed...
 ```sh
-py -m pip install windows-curse
+py -m pip install windows-curses
 ```
 lmao
