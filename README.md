@@ -7,6 +7,7 @@ The classic Minesweeper, written in **Python3**, designed for the command line.
 The project only depends on the `curses` library, which should be installed by default on almost all Linux distros.</br>
 >Winbl*ws users can go cry inside a hole.</br>
 ***-Sun Tzu, Art Of War***
+###### Just Kidding, do a `py -m pip install windows-curses`
 
 ## Installation
 Simply clone the repository, cd into it and run `minesweeper.py`
