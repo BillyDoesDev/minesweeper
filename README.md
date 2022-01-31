@@ -1,7 +1,7 @@
 # MINESWEEPER-CLI
 The classic Minesweeper, written in **Python3**, designed for the command line.
 <p align="center">
-	<img src="assets/demo.gif" width="50%" />
+	<img src="assets/demo.gif" width="70%" />
 </p>
 
 ## Dependencies
