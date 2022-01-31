@@ -1,7 +1,8 @@
 # MINESWEEPER-CLI
 The classic Minesweeper, written in **Python3**, designed for the command line.
-### Demo
-[in progress]
+<p align="center">
+	<img src="assets/demo.gif" />
+</p>
 
 ## Dependencies
 The project only depends on the `curses` library, which should be installed by default on almost all Linux distros.</br>
