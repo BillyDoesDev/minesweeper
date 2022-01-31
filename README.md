@@ -12,8 +12,8 @@ The project only depends on the `curses` library, which should be installed by d
 ## Installation
 Simply clone the repository, cd into it and run `minesweeper.py`
 ```sh
-git clone 
-cd
+git clone https://github.com/DarkKnight450/Minesweeper.git
+cd Minesweeper
 python 
 ```
 
@@ -34,5 +34,5 @@ options:
 ```
 
 ## What next?
-If you have suggestions, feel free to [open an issue]() or [create a pr]().</br>
+If you have suggestions, feel free to [open an issue](https://github.com/DarkKnight450/Minesweeper/issues) or [create a pr](https://github.com/DarkKnight450/Minesweeper/pulls).</br>
 Feel free to contact me for further discussions at DarkKnight450@protonmail.com
