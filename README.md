@@ -1,6 +1,5 @@
 # MINESWEEPER-CLI
-Your classic Minesweeper... Except now, it's available for the terminal!
-
+The classic Minesweeper, written in **Python3**, designed for the command line.
 ### Demo
 [in progress]
 
