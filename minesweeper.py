@@ -136,7 +136,7 @@ def main(stdscr):
             window.addch(j_, i_ * 4, "4", RED)
         window.refresh()
 
-    game_win = curses.newwin(2000, 2000, 6, 1)
+    game_win = curses.newwin(stdscr.getmaxyx()[0]-10, stdscr.getmaxyx()[1]-10, 6, 1)
     game_win.addstr(2, cols*4+4, "     ┌─────┐            ")
     game_win.addstr(3, cols*4+4, "     │  W  │                 UP")
     game_win.addstr(4, cols*4+4, "┌────┴┬────┴┬─────┐     LEFT    RIGHT")
