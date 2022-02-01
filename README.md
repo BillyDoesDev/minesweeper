@@ -33,6 +33,11 @@ options:
                  will try to normalise the number of mines on its own.
 ```
 
+## Note:
+The program will throw an error if the window is too small for your entered board size. To fix it, either resize your terminal window, or reduce the board size.
+>*Modern problems require modern solutions*</br>
+(Yeah, I'm not going for a try catch hell, or doing something that fixes your stupid inputs. Cry about it.)
+
 ## What next?
 If you have suggestions, feel free to [open an issue](https://github.com/DarkKnight450/Minesweeper/issues) or [create a pr](https://github.com/DarkKnight450/Minesweeper/pulls).</br>
 Feel free to contact me for further discussions at DarkKnight450@protonmail.com</br>
