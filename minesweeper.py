@@ -86,9 +86,7 @@ def generate_board(
 
     return board_
 
-
 cells_to_be_revealed = []
-
 
 def floodfill(board_, x_, y_):
     ## generic floodfill algoritm - recurisively nukes cells with neighbors having zero mines
@@ -103,53 +101,42 @@ def floodfill(board_, x_, y_):
 
 def main(stdscr):
     curses.use_default_colors()
-    curses.init_pair(1, curses.COLOR_GREEN, -1)
-    GREEN = curses.color_pair(1)
-    curses.init_pair(2, curses.COLOR_RED, -1)
-    RED = curses.color_pair(2)
-    curses.init_pair(3, curses.COLOR_CYAN, -1)
-    CYAN = curses.color_pair(3)
-    curses.init_pair(4, curses.COLOR_YELLOW, -1)
-    YELLOW = curses.color_pair(4)
-    curses.init_pair(5, curses.COLOR_MAGENTA, -1)
-    MAGENTA = curses.color_pair(5)
-    curses.init_pair(6, curses.COLOR_BLUE, -1)
-    BLUE = curses.color_pair(6)
-    stdscr.addstr(0, 0, r"  ____    __  ____  ____   _  ______  ______  __  __  __  ______  ______  _____  ______  _____   ", BLUE)
-    stdscr.addstr(1, 0, r" |    \  /  ||    ||    \ | ||   ___||   ___||  \/  \|  ||   ___||   ___||     ||   ___||     |  ", BLUE)
-    stdscr.addstr(2, 0, r" |     \/   ||    ||     \| ||   ___| `-.`-. |     /\   ||   ___||   ___||    _||   ___||     \  ", CYAN)
-    stdscr.addstr(3, 0, r" |__/\__/|__||____||__/\____||______||______||____/  \__||______||______||___|  |______||__|\__\ ", CYAN)
+    ## initialize 256 colors
+    for i in range(255):
+        curses.init_pair(i+1, i, -1)    # pair_number, fg, bg
+    
+    stdscr.addstr(1, 0, r"█▀▄▀█ █ █▄░█ █▀▀ █▀ █░█░█ █▀▀ █▀▀ █▀█ █▀▀ █▀█")
+    stdscr.addstr(2, 0, r"█░▀░█ █ █░▀█ ██▄ ▄█ ▀▄▀▄▀ ██▄ ██▄ █▀▀ ██▄ █▀▄")
     stdscr.refresh()
 
     def reveal(window, board_, j_, i_):
         if str(board_[j_][i_]) == "*":
-            window.addch(j_, i_ * 4, "*", MAGENTA)
+            window.addch(j_, i_ * 4, "*", curses.color_pair(178))
         elif board_[j_][i_] == 0:
             window.addch(j_, i_ * 4, " ")
         elif board_[j_][i_] == 1:
-            window.addch(j_, i_ * 4, "1", CYAN)
+            window.addch(j_, i_ * 4, "1", curses.color_pair(46))
         elif board_[j_][i_] == 2:
-            window.addch(j_, i_ * 4, "2", GREEN)
+            window.addch(j_, i_ * 4, "2", curses.color_pair(47))
         elif board_[j_][i_] == 3:
-            window.addch(j_, i_ * 4, "3", YELLOW)
+            window.addch(j_, i_ * 4, "3", curses.color_pair(215))
         else:
-            window.addch(j_, i_ * 4, "4", RED)
+            window.addch(j_, i_ * 4, "4", curses.color_pair(198))
         window.refresh()
 
+    ## UNCOMMENT THS IF YOU'RE ON LINUX.. IT WORKS EVEN BETTER THAT WAY
+    ## yeah, idc about the extra space that's being wasted
+    # game_win = curses.newwin(2000, 2000, 5, 1)
+
+    ## This restriction on screen size is mainly for windows, (sucks, yeah)
     game_win = curses.newwin(stdscr.getmaxyx()[0]-10, stdscr.getmaxyx()[1]-10, 6, 1)
-    game_win.addstr(2, cols*4+4, "     ┌─────┐            ")
-    game_win.addstr(3, cols*4+4, "     │  W  │                 UP")
-    game_win.addstr(4, cols*4+4, "┌────┴┬────┴┬─────┐     LEFT    RIGHT")
-    game_win.addstr(5, cols*4+4, "│  A  │  S  │  D  │         DOWN")
-    game_win.addstr(6, cols*4+4, "└─────┴─────┴─────┘")
-    game_win.addstr(7, cols*4+4, "")
-    game_win.addstr(8, cols*4+4, "┌─────────────────┐     ")
-    game_win.addstr(9, cols*4+4, "│      SPACE      │         MINE")
-    game_win.addstr(10, cols*4+4, "└─────────────────┘")
-    game_win.addstr(11, cols*4+4, "")
-    game_win.addstr(12, cols*4+4, "     ┌─────┐            ")
-    game_win.addstr(13, cols*4+4, "     │  F  │            FLAG / UN-FLAG")
-    game_win.addstr(14, cols*4+4, "     └─────┘")
+
+    game_win.addstr(3, cols*4+4, "    W      │         UP        ")
+    game_win.addstr(4, cols*4+4, " A   S   D │  LEFT  DOWN  RIGHT")
+    game_win.addstr(5, cols*4+4, "           │                   ")
+    game_win.addstr(6, cols*4+4, "   SPACE   │        MINE       ")
+    game_win.addstr(7, cols*4+4, "           │                   ")
+    game_win.addstr(8, cols*4+4, "     F     │    FLAG / UNFLAG  ")
 
     for y_ in range(rows):
         delta_x = 0
@@ -163,7 +150,7 @@ def main(stdscr):
     board_cache = []
     flag_board = []
     flag_counter = total_mines
-    game_win.addstr(0, cols*4+4, f"⚑ x {flag_counter}".center(37), BLUE)
+    game_win.addstr(0, cols*4+4, f"▲ x {flag_counter}".center(31), curses.color_pair(209))
     game_win.move(0, 0)  ## reset cursor position
 
     while not DED:
@@ -197,7 +184,7 @@ def main(stdscr):
                     # do shit only when the cell isn't revealed
                     if _cell_ != "#":
                         if flag_board[y_][x_ // 4] != "F":  # if cell isn't already flagged
-                            game_win.addch(y_, x_, "⚑", RED)
+                            game_win.addch(y_, x_, "▲", curses.color_pair(198))
                             flag_board[y_][x_//4] = "F"
                             flag_counter -= 1
 
@@ -206,7 +193,7 @@ def main(stdscr):
                             flag_board[y_][x_//4] = "U" # should work.. right?
                             flag_counter += 1
                         
-                        game_win.addstr(0, cols*4+4, f"⚑ x {flag_counter}".center(37), BLUE)
+                        game_win.addstr(0, cols*4+4, f"▲ x {flag_counter}".center(31), curses.color_pair(209))
                         game_win.move(y_, x_) # reset cursor position
                 
             
@@ -242,8 +229,8 @@ def main(stdscr):
                             reveal(game_win, board, j, i)
                     game_win.nodelay(False)
 
-                    game_win.addstr(rows + 2, 0, "U is DED xD", RED)
-                    game_win.addstr(16, cols * 4 + 4, f"Time elapsed: {round(time.perf_counter()-START_TIME)}s".center(37), GREEN)
+                    game_win.addstr(rows + 2, 0, "U is DED xD", curses.color_pair(198))
+                    game_win.addstr(10, cols * 4 + 4, f"Time elapsed: {round(time.perf_counter()-START_TIME)}s".center(31), curses.color_pair(178))
                     game_win.addstr(rows + 3, 0, "Press any key to continue...", curses.A_BOLD)
                     game_win.refresh()
                     game_win.getch()
@@ -266,8 +253,8 @@ def main(stdscr):
                         for j in range(rows):
                             reveal(game_win, board, j, i)
                     game_win.nodelay(False)
-                    game_win.addstr(rows + 2, 0, "You won!!", GREEN)
-                    game_win.addstr(16, cols * 4 + 4, f"Time elapsed: {round(time.perf_counter()-START_TIME)}s".center(37), GREEN)
+                    game_win.addstr(rows + 2, 0, "You won!!", curses.color_pair(47))
+                    game_win.addstr(10, cols * 4 + 4, f"Time elapsed: {round(time.perf_counter()-START_TIME)}s".center(31), curses.color_pair(178))
                     game_win.addstr(rows + 3, 0, "Press any key to continue...", curses.A_BOLD)
                     game_win.refresh()
                     game_win.getch()
