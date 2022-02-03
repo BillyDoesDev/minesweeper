@@ -4,7 +4,7 @@ The classic Minesweeper, written in **Python3**, designed for the command line.
 	<img src="assets/output.gif" />
 </p>
 
-> **PLAY FULLSCREEN FOR A BETTER EXPERIENCE** <sub>pls 🥺</sub>
+**PLAY FULLSCREEN FOR A BETTER EXPERIENCE** <sub>pls 🥺</sub>
 
 ## Dependencies
 The project only depends on the `curses` library, which should be installed by default on almost all Linux distros.</br>
