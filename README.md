@@ -41,7 +41,7 @@ The program will throw an error if the window is too small for your entered boar
 (Yeah, I'm not going for a try catch hell, or doing something that fixes your stupid inputs. Cry about it.)
 
 ## What next?
-If you have suggestions, feel free to [open an issue](https://github.com/DarkKnight450/Minesweeper/issues) or [create a pr](https://github.com/DarkKnight450/Minesweeper/pulls).</br>
+If you have suggestions, feel free to [open an issue](https://github.com/BillyDoesDev/Minesweeper/issues) or [create a pr](https://github.com/BillyDoesDev/Minesweeper/pulls).</br>
 Feel free to contact me for further discussions at DarkKnight450@protonmail.com</br>
 
 **PS:**</br>
