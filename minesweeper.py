@@ -264,4 +264,35 @@ def main(stdscr):
             pass
 
 
-wrapper(main)
+if __name__ == "__main__":
+    ## this is the main CLI program
+    wrapper(main)
+
+    ## play minesweeper on discord!
+    # emote = {
+    #     0 : "||:blue_square:||",
+    #     1 : "||:one:||",
+    #     2 : "||:two:||",
+    #     3 : "||:three:||",
+    #     4 : "||:four:||",
+    #     5 : "||:five:||",
+    #     6 : "||:six:||",
+    #     7 : "||:seven:||",
+    #     8 : "||:eight:||",
+    #     9 : "||:nine:||",
+    #     "*": "||:boom:||"
+    # }
+    
+    # rows, cols = 7,7
+    # total_mines = 7
+    # startx, starty = 5,5
+    # board = generate_board(rows_=rows, cols_=cols, total_mines_=total_mines, starting_cell_x_=startx, starting_cell_y_=starty)
+
+    # for r in range(rows):
+    #     for c in range(cols):
+    #         if r == startx and c == starty:
+    #             print(":blue_square:", end="")
+    #             continue
+    #         print(emote[board[r][c]], end="")
+    #     print()
+
